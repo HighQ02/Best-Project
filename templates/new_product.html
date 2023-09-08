@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block href %}
+
+{% endblock href %}
+
+{% block content %}
+    <style>
+        body{
+            background-color: #f5f5f5;
+        }
+
+        .container{
+            max-width: 400px;
+            margin: 85px auto;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .text {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        label{
+            font-weight: bold;
+        }
+
+        .edit-input {
+            width: 100%;
+        }
+
+        .profile-info p {
+            margin: 0;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .edit-button, .return-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover, .return-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="container">
+        <div class="text">New Product</div> <p></p>
+
+        <form id="new_product" action="{% url 'new_product_url' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="name_input">Name:</label> <p></p>
+            <input class="edit-input" type="text" name="name_input" id="name_input" placeholder="Product Name" required>
+                
+            <br><br>
+            <label for="description_input">Description:</label> <p></p>
+            <input class="edit-input" type="text" name="description_input" id="description_input" placeholder="Product Description" required>
+        
+            <br><br>
+            <label for="price_input">Price:</label> <p></p>
+            <input class="edit-input" type="number" name="price_input" id="price_input" placeholder="Product Price" required>
+        
+            <br><br>
+            <label for="img_input">Image:</label> <p></p>
+            <input class="edit-input" type="file" name="img_input" id="img_input" placeholder="Product Image" required>
+
+            <br><br>
+            <label for="category_select">Category:</label> <p></p>
+            <select class="edit-input" name="category_select" id="category_select" required>
+                {% for category in Category %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+        </form>
+
+        <div class="profile-actions">
+            <input type="submit" value="Save" class="edit-button" form="new_product">
+            <button onclick="location.href='{% url 'profile_view_url' %}'" class="return-button">Return</button>
+        </div>  
+    </div>
+{% endblock content %}

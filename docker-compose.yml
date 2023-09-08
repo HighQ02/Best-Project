@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    expose:
+      - 8000
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - static_volume:/code/staticfiles
+      - media_volume:/code/media
+  nginx:
+    build: ./nginx
+    ports:
+      - 12345:80
+    volumes:
+      - static_volume:/code/staticfiles
+      - media_volume:/code/media
+    depends_on:
+      - web
+
+volumes:
+  static_volume:
+  media_volume:

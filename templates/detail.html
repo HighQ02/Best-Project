@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ item.name }} {% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-5 gap-6">
+      <div class="col-span-3">
+          <img src="{{ item.image.url }}" class="rounded-xl" >
+      </div>
+      <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+        <h1 class="mb-6 text-3xl ">{{ item.name }}</h1>
+        <p class="text-gray-500"><strong>Price: </strong> {{item.price}} </p>
+        <p class="text-gray-500"><strong>Seller: </strong> {{item.created_by.username}} </p>
+         {% if item.description %}
+            <p class="text-gray-700">
+                <strong class="text-gray-500">Description:</strong><br>
+                {{ item.description }}
+            </p>
+        {% endif %}
+          {% if request.user == item.created_by %}
+            <div class="mt-6 p-6 bg-white rounded -xl">
+                <p>This is your item!</p>
+                <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-sky-500 text-white rounded-xl">Edit</a>
+                <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+
+            </div>
+        {% else %}
+            <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-sky-500 text-white rounded-xl hover:bg-sky-700">Contact seller</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="mt-6 p-6 bg-white rounded-xl">
+        <h2 class="mb-4 text-xl">Leave a Review</h2>
+        <form method="post" class="mb-6">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit Review</button>
+        </form>
+
+        <h2 class="mb-4 text-xl">Reviews</h2>
+        <ul>
+            {% for review in item.reviews.all %}
+                <li class="bg-white p-4 rounded shadow-md">
+                    <div class="flex justify-between">
+                        <div class="font-semibold">{{ review.user.username }}</div>
+                        <div class="text-gray-500">{{ review.created_at}}</div>
+
+                    </div>
+                    <div class="ml-2 text-gray-600">{{ review.rating }}/5</div>
+                    <p class="mt-2">{{ review.text }}</p>
+
+                    <ul>
+                        {% for reply in review.replies.all %}
+                            <li class="reply-container ml-6">
+                                <div class="reply-info ml-6">
+                                    <div class="font-semibold">{{ reply.user.username }}</div>
+                                    <div class="text-gray-500">{{ reply.created_at }}</div>
+                                </div>
+                                <div class="reply-text ml-6">
+                                    <p class="mt-2">{{ reply.text }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" class="mb-6 ml-12 border-l-2 pl-4 bg-gray-100 py-2">
+                        <div class="mb-2">
+                            <strong>Reply to this review:</strong>
+                        </div>
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ review.id }}" name="review_id">
+                        {{ reply_form.as_p }}
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit Reply</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No reviews yet.</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+     <div class="mt-6 px-6 py-12 bg-gray-100 rounded xl">
+        <h2 class="mb-12 text-2xl text-center"> Related items </h2>
+        <div class="grid grid-cols-3 gap-3">
+            {% for item in related_items %}
+                <div>
+                    <a href="{% url 'item:detail' item.id %}">
+                        <div>
+                            <img src="{{ item.image.url }}" class="rounded-t-xl">
+                        </div>
+
+                        <div class="p-y bg-white rounded-b-xl">
+                            <h2 class="text-2xl"> {{ item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

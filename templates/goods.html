@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block href %}
+    <a class="nav-link" aria-current="page" href="{% url 'cart_detail' %}">Корзина</a>
+{% endblock href %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base_static/bootstrap1/bootstrap.min.css' %}?{% now 'U' %}">
+
+    <style>
+        .header{
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .search-bar{
+            width: 960px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 14px 0;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .search-bar_form{
+            padding-top: 5px;
+        }
+
+        .search-bar_a{
+            width: 100px;
+            height: 35px;
+            line-height: 32px;
+            text-align: center;
+            color: #0089d0;
+            border: 1px solid #e5e5e5;
+            border-radius: 2px 0 0 2px;
+            font-family: "Roboto",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            background: #f5f5f5;
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-bar_wrapper{
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .search-bar_input-text{
+            appearance: none;
+            vertical-align: middle;
+            max-width: 100%;
+            border: 1px solid #e5e5e5;
+            margin-right: 0;
+            height: 33px;
+            width: 780px;
+            background: #fbfbfb;
+            border-radius: 0;
+            padding: 0 20px 0 10px;
+        }
+
+        .search-bar_input-submit{
+            margin-bottom: 0;
+            padding-left: 14px;
+            padding-right: 14px;
+            vertical-align: middle;
+            display: inline-block;
+            height: 35px;
+            padding: 7px 21px;
+            font-size: 14px;
+            line-height: 21px;
+            border: 0;
+            border-radius: 2px;
+            outline: 0;
+            background: #0089d0;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .01s;
+        }
+    </style>
+
+
+    <div class="header">
+        <div class="search-bar">
+            <form action="{% url 'search_url' %}" method="GET" class="search-bar_form">
+                <a href="{% url 'shop_url' %}" class="search-bar_a">Shop</a>
+                <div class="search-bar_wrapper">
+                    <input type="text" class="search-bar_input-text" id="search_input" name="search_input" placeholder="Search!">
+                    <input type="submit" class="search-bar_input-submit" id="submit_input" value="Find">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <h1 class="my-4">Store</h1>
+                <div class="list-group">
+                    <a href="{% url 'goods_url' %}" class="list-group-item">Все категории</a>
+                    {% for category in Category %}
+                        <a href="{% url 'good_by_category_url' category.id %}"  class="list-group-item">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+    
+            <div class="col-lg-9">    
+                <div class="row">
+                    {% for good in goods %}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <a href="{% url 'good_detail_url' good.id %}">
+                                    <img class="card-img-top" src="{{ good.image.url }}" alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <a href="{% url 'good_detail_url' good.id %}">{{ good.name }}</a>
+                                    </h4>
+                                    <p>Цена:</p><h5>{{ good.price }}₸</h5><br>
+                                    <!-- <p>В рассрочку:</p><h5>{{ good.price }}₸ x12</h5><br> -->
+                                </div>
+                                <div class="card-footer text-center">
+                                    <button type="button" class="btn btn-outline-success" onclick="location.href='{% url 'cart_add' good.id %}'">Добавить в корзину</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+    
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if goods.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" tabindex="-1" aria-disabled="true">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ goods.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                        {% endif %}
+        
+                        {% for page_num in goods.paginator.page_range %}
+                            <li class="page-item {% if goods.number == page_num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                        {% endfor %}
+        
+                        {% if goods.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ goods.next_page_number }}">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ goods.paginator.num_pages }}">Last</a>
+                            </li>
+                        {% endif %}
+                        
+                        <!-- <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li> -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

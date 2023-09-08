@@ -1,0 +1,170 @@
+body{
+    background-color: #f5f5f5;
+}
+
+.main-block{
+    background: #f0f0f0;
+}
+
+.main-screen {
+    max-width: 900px;
+    height: 400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-screen-details{
+    margin-left: 90px;
+}
+
+.main-screen-header{
+    font-size: 100px;
+    line-height: 110px;
+    font-weight: 900;
+}
+
+.main-screen-text{
+    margin-top: 12px;
+    font-size: 30px;
+    line-height: 36px;
+}
+
+.main-screen-logo{
+    font-size: 135px;
+}
+
+.django-shop{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.django-shop_wrapper{
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.django-shop_title{
+    font-size: 50px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.django-shop_slider{
+    margin-top: 38px;
+    width: 1200px;
+    height: 100%;
+    min-height: 1px;
+}
+
+.django-shop_slider-wrapper{
+    display: flex;
+}
+
+.django-shop_slider-item{
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    padding: 20px;
+    height: 260px;
+    max-width: 220px;
+    min-width: 220px;
+    border-radius: 16px;
+    margin: 7.5px 12px;
+    background: #fff;
+}
+
+.category-card_title{
+    text-align: center;
+    font-size: 20px;
+    line-height: 23.44px;
+    display: block;
+    color: rgba(0,0,0,.88);
+}
+
+.category-card_image{
+    display: block;
+    margin-top: 5px;
+}
+
+.category-card_image img{
+    width: 100%;
+}
+
+.stay-partner{
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 24px;
+    border-radius: 20px;
+    padding: 50px 40px 82px;
+    background-color: #fff;
+}
+
+.stay-partner_title{
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 54px;
+    text-align: center;
+}
+
+.stay-partner_card{
+    margin-top: 80px;
+    background-color: rgba(0,0,0,.04);
+    border-radius: 16px;
+    max-width: 547px;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 100%;
+}
+
+.partner-card_header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.partner-card_title{
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 36px;
+}
+
+.partner-card_description{
+    margin: 16px 0;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.partner-card_action{
+    margin-top: auto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.partner-card_action a{
+    color: #0089D0;
+    cursor: pointer;
+    text-decoration: none;
+}
+        
+.shop-button {
+    width: 100%;
+    color: #0089d0;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.shop-button:hover{
+    background-color: #0056b3;
+}

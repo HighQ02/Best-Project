@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block href %}
+    <select name="city" id="select_language" onchange="selectLanguage()" class="nav-link" aria-current="page" style="height: 40px;">
+        {% if request.session.language == 'en' %}
+            <option value="en" selected>En</option>
+            <option value="rus">Rus</option>
+            <option value="kz">Kz</option>
+        {% elif request.session.language == 'rus' %}
+            <option value="en">En</option>
+            <option value="rus" selected>Rus</option>
+            <option value="kz">Kz</option>
+        {% elif request.session.language == 'kz' %}
+            <option value="en">En</option>
+            <option value="rus">Rus</option>
+            <option value="kz" selected>Kz</option>
+        {% endif %}
+    </select>
+
+    <form id="language_form" action="{% url 'geolocation_url' %}" method="post">
+        {% csrf_token %}
+        <input id="language_input" type="hidden" name="language" value="eng">
+        <input type="submit" style="display: none;">
+    </form>
+{% endblock href %}
+
+{% block content %}
+    <style>
+        .box {
+            background: #fff;
+        }
+    </style>
+
+    <div class="container mt-5 p-3 rounded box align-items-center">
+        <div class="row no-gutters" style="flex-wrap: nowrap; justify-content: space-between;">
+            <div style="width: auto; text-align: center; margin: auto;">
+                <h1>{{ country }}  |  {{ countryCode }}</h1>
+                <h2>{{ city }}  |  region: {{ region }}</h2>
+                <h3>lat: {{ lat }}  |  lon: {{ lon }}</h3>
+                <h3>timezone: {{ timezone }}</h3>
+                <h3>isp: {{ isp }}</h3>
+                <h1>API: {{ API }}</h1>
+            </div>
+            <div style="width: auto;">
+                <iframe src="https://nominatim.openstreetmap.org/ui/reverse.html?lat={{ lat }}&lon={{ lon }}1&zoom=15" frameborder="0" style="width: 500px; height: 500px;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectLanguage() {
+            const selectElement = document.getElementById("select_language");
+            const selectedValue = selectElement.value;
+
+            const languageInput = document.getElementById("language_input");
+            languageInput.value = selectedValue;
+            
+            const languageForm = document.getElementById("language_form");
+            languageForm.submit();
+        }
+    </script>
+{% endblock content %}

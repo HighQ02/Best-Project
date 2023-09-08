@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block href %}
+    <select name="city" id="select_language" onchange="selectLanguage()" class="nav-link" aria-current="page" style="height: 40px;">
+        <option value="">En</option>
+        <option value="rus" selected>Rus</option>
+        <option value="kz">Kz</option>
+    </select>
+{% endblock href %}
+
+{% block content %}
+    <style>
+        .main-block{
+            background: #ababab;
+        }
+
+        .main-screen {
+            max-width: 900px;
+            height: 400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-screen-details{
+            margin-left: 90px;
+        }
+
+        .main-screen-header{
+            font-size: 100px;
+            line-height: 110px;
+            font-weight: 900;
+        }
+
+        .main-screen-text{
+            margin-top: 12px;
+            font-size: 30px;
+            line-height: 36px;
+        }
+
+        .main-screen-logo{
+            font-size: 135px;
+        }
+    </style>
+
+    <div class="main-block">
+        <div class="main-screen">
+            <div class="main-screen-logo">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <div class="main-screen-details">
+                <div class="main-screen-header">Django Store</div>
+                <div class="main-screen-text">Приложение №1 в Казахстане</div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://kit.fontawesome.com/73ac4e980c.js" crossorigin="anonymous"></script>
+    <script>
+        function selectLanguage() {
+            var select = document.getElementById('select_language');
+            document.location.href = '/' + select.value;
+        };
+    </script>
+{% endblock content %}

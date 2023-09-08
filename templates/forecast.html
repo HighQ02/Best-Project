@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'forecast/forecast.css' %}?{% now 'U' %}">
+    <title>Forecast</title>
+</head>
+<body>
+    <style>
+        .container{
+            height: {{ container }};
+        }
+
+        .weather-box, .weather-details{
+            animation: 0.5s fadeIn forwards;
+            animation-delay: 0.5s;
+            display: {{ weatherBoxDetails }};
+        }
+
+        .not-found {
+            animation: 0.5s fadeIn forwards;
+            animation-delay: 0.5s;
+            display: {{ error404 }};
+        }
+    </style>
+
+    <div class="container">
+        <div class="search-box">
+            <i class="fa-solid fa-location-dot form_i"></i>
+            <form action="{% url 'forecast_url' %}" method="post">
+                {% csrf_token %}
+                <input class="form_input" name="city_name" type="text" placeholder="Enter your location">
+                <button class="fa-solid fa-magnifying-glass form_button"></button>
+            </form>
+        </div>
+
+        <div class="not-found">
+            <img src="/media/weather/404.png">
+            <p>Oops! Invalid location :/</p>
+        </div>
+
+        <div class="weather-box">
+            <img src="{{ image }}">
+            <p class="temperature">{{ temp }}</p>
+            <p class="description">{{ description }}</p>
+        </div>
+
+        <div class="weather-details">
+            <div class="humidity">
+                <i class="fa-solid fa-water"></i>
+                <div class="text">
+                    <span>{{ humidity }}</span>
+                    <p>Humidity</p>
+                </div>
+            </div>
+            <div class="wind">
+                <i class="fa-solid fa-wind"></i>
+                <div class="text">
+                    <span>{{ wind }}</span>
+                    <p>Wind Speed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <h6>Время рассвета: {{ sunrice|date:'d-m-Y H:i' }}</h6>
+    <h6>Время заката: {{ sunset|date:'d-m-Y H:i' }}</h6> -->
+
+
+    <script src="https://kit.fontawesome.com/7c8801c017.js" crossorigin="anonymous"></script>
+</body>
+</html>

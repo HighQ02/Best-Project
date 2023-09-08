@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block href %}
+    <a class="nav-link" aria-current="page" href="{% url 'cart_detail' %}">Корзина</a>
+{% endblock href %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base_static/bootstrap1/bootstrap.min.css' %}?{% now 'U' %}">
+
+    <style>
+        .header{
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .search-bar{
+            width: 960px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 14px 0;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .search-bar_form{
+            padding-top: 5px;
+        }
+
+        .search-bar_a{
+            width: 100px;
+            height: 35px;
+            line-height: 32px;
+            text-align: center;
+            color: #0089d0;
+            border: 1px solid #e5e5e5;
+            border-radius: 2px 0 0 2px;
+            font-family: "Roboto",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            background: #f5f5f5;
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-bar_wrapper{
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .search-bar_input-text{
+            appearance: none;
+            vertical-align: middle;
+            max-width: 100%;
+            border: 1px solid #e5e5e5;
+            margin-right: 0;
+            height: 33px;
+            width: 780px;
+            background: #fbfbfb;
+            border-radius: 0;
+            padding: 0 20px 0 10px;
+        }
+
+        .search-bar_input-submit{
+            margin-bottom: 0;
+            padding-left: 14px;
+            padding-right: 14px;
+            vertical-align: middle;
+            display: inline-block;
+            height: 35px;
+            padding: 7px 21px;
+            font-size: 14px;
+            line-height: 21px;
+            border: 0;
+            border-radius: 2px;
+            outline: 0;
+            background: #0089d0;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .01s;
+        }
+    </style>
+
+
+    <div class="header">
+        <div class="search-bar">
+            <form action="{% url 'search_url' %}" method="GET" class="search-bar_form">
+                <a href="{% url 'shop_url' %}" class="search-bar_a">Shop</a>
+                <div class="search-bar_wrapper">
+                    <input type="text" class="search-bar_input-text" id="search_input" name="search_input" placeholder="Search!">
+                    <input type="submit" class="search-bar_input-submit" id="submit_input" value="Find">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <h1 class="my-4">Store</h1>
+                <div class="list-group">
+                    <a href="{% url 'goods_url' %}" class="list-group-item">Все категории</a>
+                    {% for category in Category %}
+                        <a href="{% url 'good_by_category_url' category.id %}"  class="list-group-item">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-5 gap-6">
+                <div class="col-span-3">
+                    <img src="{{ item.image.url }}" class="rounded-xl" >
+                </div>
+                <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+                    <h1 class="mb-6 text-3xl ">{{ item.name }}</h1>
+                    <p class="text-gray-500"><strong>Price: </strong> {{item.price}} </p>
+                    <p class="text-gray-500"><strong>Seller: </strong> {{item.seller.username}} </p>
+                    {% if item.description %}
+                        <p class="text-gray-700">
+                            <strong class="text-gray-500">Description:</strong><br>
+                            {{ item.description }}
+                        </p>
+                    {% endif %}
+                    {% if request.user == item.seller %}
+                        <h1>This is your item</h1>
+                    {% else %}
+                        <a href="{% url 'new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-sky-500 text-aqua rounded-xl hover:bg-sky-700" style="color: #0089d0;">Contact seller</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-6 p-6 bg-white rounded-xl">
+                <h2 class="mb-4 text-xl">Leave a Review</h2>
+                <form method="post" class="mb-6">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit Review</button>
+                </form>
+
+                <h2 class="mb-4 text-xl">Reviews</h2>
+                <ul>
+                    {% for review in item.reviews.all %}
+                        <li class="bg-white p-4 rounded shadow-md">
+                            <div class="flex justify-between">
+                                <div class="font-semibold">{{ review.user.username }}</div>
+                                <div class="text-gray-500">{{ review.created_at}}</div>
+
+                            </div>
+                            <div class="ml-2 text-gray-600">{{ review.rating }}/5</div>
+                            <p class="mt-2">{{ review.text }}</p>
+
+                            <ul>
+                                {% for reply in review.replies.all %}
+                                    <li class="reply-container ml-6">
+                                        <div class="reply-info ml-6">
+                                            <div class="font-semibold">{{ reply.user.username }}</div>
+                                            <div class="text-gray-500">{{ reply.created_at }}</div>
+                                        </div>
+                                        <div class="reply-text ml-6">
+                                            <p class="mt-2">{{ reply.text }}</p>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <form method="post" class="mb-6 ml-12 border-l-2 pl-4 bg-gray-100 py-2">
+                                <div class="mb-2">
+                                    <strong>Reply to this review:</strong>
+                                </div>
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ review.id }}" name="review_id">
+                                {{ reply_form.as_p }}
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit Reply</button>
+                            </form>
+                        </li>
+                    {% empty %}
+                        <li>No reviews yet.</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/profile_delete.css' %}?{% now 'U' %}">
+
+    <div class="profile-card">
+        {% if Profile.image %}
+            <img src="{{ Profile.image.url }}" id="image_id" class="profile-image">
+        {% else %}
+            <img src="" id="image_id" class="profile-image" style="border: black 2px solid; background-color: #323232;">
+        {% endif %}
+
+        <div class="profile-name">{{ Profile.user.username }}</div>
+
+        <div class="profile-info">
+            <h1 align="center">Вы уверены что хотите удалить профиль пользователя {{ Profile.user.username }}?</h1>
+            <form id="delete_form" action="{% url 'profile_delete_url' %}" method="post">
+                {% csrf_token %}
+            </form>
+
+            <div class="profile-actions">
+                <input type="submit" value="Удалить" class="delete-button" form="delete_form">
+                <button onclick="location.href='{% url 'profile_view_url' %}'" class="return-button">Return</button>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

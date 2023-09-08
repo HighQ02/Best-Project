@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block href %}
+    <a class="nav-link" aria-current="page" href="{% url 'chats' %}">Chats</a>
+{% endblock href %}
+{% block second_href %}
+    <a class="nav-link" aria-current="page" href="{% url 'geolocation_url' %}">Geolocation</a>
+{% endblock second_href %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/profile.css' %}?{% now 'U' %}">
+
+    {% if user.is_authenticated %}
+        <div class="profile-card">
+            {% if Profile.image %}
+                <img src="{{ Profile.image.url }}" id="image_id" class="profile-image">
+            {% else %}
+                <img src="" id="image_id" class="profile-image" style="border: rgb(0, 0, 0) 2px solid; background-color: #323232;">
+            {% endif %}
+
+            <div class="profile-name">{{ Profile.user.username }}</div>
+
+            <div class="profile-info">
+                <label>First Name:</label>
+                {% if Profile.first_name %}
+                    <p>{{ Profile.first_name }}</p>
+                {% else %}
+                    <p>None</p>
+                {% endif %}
+
+                <label>Last Name:</label>
+                {% if Profile.last_name %}
+                    <p>{{ Profile.last_name }}</p>
+                {% else %}
+                    <p>None</p>
+                {% endif %}
+
+                <label>Email:</label>
+                <p>{{ Profile.email }}</p>
+
+                <label>Phone:</label>
+                {% if Phone %}
+                    <p>{{ Phone }}</p>
+                {% else %}
+                    <p>None</p>
+                {% endif %}
+            </div>
+
+            <div class="profile-actions">
+                <button onclick="location.href='{% url 'profile_edit_url' %}'" class="edit-button">Edit Profile</button>
+                <button onclick="location.href='{% url 'profile_delete_url' %}'" class="delete-button">Delete Profile</button>
+                <button onclick="location.href='{% url 'logout_url' %}'" class="logout-button" >Log Out</button> 
+            </div>
+
+            {% if Profile.status == 'admin' or Profile.status == 'seller' %}
+                <div class="shop-actions">
+                    <button onclick="location.href='{% url 'new_product_url' %}'" class="add_product-button">Add Product</button>
+                    <button onclick="location.href='{% url 'history_url' %}'" class="history-button">History</button>
+                </div>
+            {% else %}
+                <div class="shop-actions">
+                    <button onclick="location.href='{% url 'history_url' %}'" class="history-button" style="width: 100%;">History</button>
+                </div>
+            {% endif %}
+
+            {% if user.is_superuser %}
+                <div class="admin-action">
+                    <button onclick="location.href='/admin'" class="admin-button">Admin</button>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="profile-actions">
+            <button onclick="location.href='{% url 'admin_url' %}'" class="logout-button" >Log In</button> 
+        </div>
+    {% endif %}
+{% endblock content %}
+<!-- onclick="location.href='{% url 'logout_url' %}'" -->

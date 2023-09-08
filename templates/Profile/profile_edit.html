@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/profile_edit.css' %}?{% now 'U' %}">
+
+    <div class="profile-card">
+        <div class="profile-info">
+            <form id="edit_form" action="{% url 'profile_edit_url' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="profile-image-container">
+                    <label for="image_id">
+                        {% if Profile.image %}
+                            <img src="{{ Profile.image.url }}" id="image_id" class="profile-image">
+                        {% else %}
+                            <img src="../media/profile/add-image.png" id="image_id" class="profile-image" style="border: black 1px solid;">
+                        {% endif %}
+                    </label>
+                    <input type="file" id="image_id_input" name="image_name" style="display: none;">
+                </div>
+        
+                <br>
+                <label for="username_id">New Username:</label> <p></p>
+                <input class="edit-input" type="text" name="username_name" id="username_id" placeholder="{{ Profile.user.username }}">
+                
+                <br><br>
+                <label for="first_name_id">New First Name:</label> <p></p>
+                <input class="edit-input" type="text" name="first_name" id="first_name_id" placeholder="{{ Profile.first_name }}">
+        
+                <br><br>
+                <label for="last_name_id">New Last Name:</label> <p></p>
+                <input class="edit-input" type="text" name="last_name" id="last_name_id" placeholder="{{ Profile.last_name }}">
+        
+                <br><br>
+                <label for="email_id">New Email:</label> <p></p>
+                <input class="edit-input" type="email" name="email_name" id="email_id" placeholder="{{ Profile.email }}">
+        
+                <br><br>
+                <label for="phone_id">New Phone:</label> <p></p>
+                <input class="edit-input" type="tel" name="phone_name" id="phone_id" pattern="[+][7][0-9]{10}" placeholder="{{ Profile.phone }}">
+        
+                <br><br>
+            </form>
+
+            <div class="profile-actions">
+                <input type="submit" value="Save" class="edit-button" form="edit_form">
+                <button onclick="location.href='{% url 'profile_view_url' %}'" class="return-button">Return</button>
+            </div>  
+        </div>
+    </div>
+
+
+    <script>
+        const image = document.getElementById('image_id')
+        const image_input = document.getElementById('image_id_input')
+      
+        image.addEventListener('click', () => {
+            image_input.click()
+        })
+
+        image_input.addEventListener('change', () => {
+          const file = image_input.files[0]
+          const reader = new FileReader()
+      
+          reader.onload = (event) => {
+            image.src = event.target.result
+          }
+      
+          reader.readAsDataURL(file)
+        })
+    </script>
+      
+{% endblock content %}

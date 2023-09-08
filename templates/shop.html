@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block href %}
+
+{% endblock href %}
+
+{% block content %}
+    <style>
+        .header{
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .search-bar{
+            width: 960px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 14px 0;
+            position: relative;
+        }
+
+        .search-bar_form{
+            padding-top: 5px;
+        }
+
+        .search-bar_a{
+            width: 100px;
+            height: 35px;
+            line-height: 32px;
+            text-align: center;
+            color: #0089d0;
+            border: 1px solid #e5e5e5;
+            border-radius: 2px 0 0 2px;
+            font-family: "Roboto",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            background: #f5f5f5;
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-bar_wrapper{
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .search-bar_input-text{
+            appearance: none;
+            vertical-align: middle;
+            max-width: 100%;
+            border: 1px solid #e5e5e5;
+            margin-right: 0;
+            height: 33px;
+            width: 780px;
+            background: #fbfbfb;
+            border-radius: 0;
+            padding: 0 20px 0 10px;
+        }
+
+        .search-bar_input-submit{
+            margin-bottom: 0;
+            padding-left: 14px;
+            padding-right: 14px;
+            vertical-align: middle;
+            display: inline-block;
+            height: 35px;
+            padding: 7px 21px;
+            font-size: 14px;
+            line-height: 21px;
+            border: 0;
+            border-radius: 2px;
+            outline: 0;
+            background: #0089d0;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .01s;
+        }
+
+        .nav{
+            border-bottom: 1px solid #e5e5e5;
+            background: #fff;
+            position: relative;
+        }
+
+        .nav_div{
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 960px;
+            margin-bottom: 0;
+        }
+
+        .nav_list{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: table;
+            width: 960px;
+            overflow: hidden;
+        }
+
+        .nav_li{
+            text-align: center;
+            height: 63px;
+            position: relative;
+            display: table-cell;
+            border-right: 1px solid #e5e5e5;
+        }
+
+        .nav_li:first-child{
+            border-left: 1px solid #e5e5e5;
+            min-width: 140px;
+        }
+
+        .nav_li-link{
+            font-family: "Roboto",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            display: inline-block;
+            text-align: center;
+            line-height: 63px;
+            height: 63px;        
+            cursor: pointer;
+            text-decoration: none;
+            color: #0089d0;
+        }
+
+        .nav_li-link-text{
+            display: inline-block;
+            padding: 0 10px;
+            vertical-align: middle;
+            margin-top: -3px;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+    </style>
+
+    <div class="header">
+        <div class="search-bar">
+            <form action="{% url 'search_url' %}" method="GET" class="search-bar_form">
+                <a href="{% url 'shop_url' %}" class="search-bar_a">Shop</a>
+                <div class="search-bar_wrapper">
+                    <input type="text" class="search-bar_input-text" id="search_input" name="search_input" placeholder="Search!">
+                    <input type="submit" class="search-bar_input-submit" id="submit_input" value="Find">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <nav class="nav">
+            <div class="nav_div">
+                <ul class="nav_list">
+                    <li class="nav_li"><a href="{% url 'goods_url' %}" class="nav_li-link"><span class="nav_li-link-text">Все категории</span></a></li>
+                    {% for category in Category %}
+                        <li class="nav_li"><a href="{% url 'good_by_category_url' category.id %}" class="nav_li-link"><span class="nav_li-link-text">{{ category.name }}</span></a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="django-shop">
+        <div class="django-shop_wrapper">
+            <div class="django-shop_title">
+                {% if request.session.language == 'en' %}
+                    Online store on Django
+                {% elif request.session.language == 'rus' %}
+                    Интернет-магазин на Django
+                {% elif request.session.language == 'kz' %}
+                    Django-дағы Интернет-дүкен
+                {% endif %}
+            </div>
+            <div class="django-shop_slider">
+                <div class="django-shop_slider-wrapper">
+                    {% for category in Category %}
+                        <a class="django-shop_slider-item" href="{% url 'good_by_category_url' category.id %}">
+                            <span class="category-card_title">{{ category.name }}</span>
+                            <span class="category-card_image"><img src="{{ category.image.url }}"></span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block href %}
+    <select name="city" id="select_language" onchange="selectLanguage()" class="nav-link" aria-current="page" style="height: 40px;">
+        {% if request.session.language == 'en' %}
+            <option value="en" selected>En</option>
+            <option value="rus">Rus</option>
+            <option value="kz">Kz</option>
+        {% elif request.session.language == 'rus' %}
+            <option value="en">En</option>
+            <option value="rus" selected>Rus</option>
+            <option value="kz">Kz</option>
+        {% elif request.session.language == 'kz' %}
+            <option value="en">En</option>
+            <option value="rus">Rus</option>
+            <option value="kz" selected>Kz</option>
+        {% endif %}
+    </select>
+
+    <form id="language_form" action="{% url language %}" method="post">
+        {% csrf_token %}
+        <input id="language_input" type="hidden" name="language" value="eng">
+        <input type="submit" style="display: none;">
+    </form>
+{% endblock href %}
+
+{% block content %}
+    <div class="main-block">
+        <div class="main-screen">
+            <div class="main-screen-logo">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <div class="main-screen-details">
+                <div class="main-screen-header">Django Store</div>
+                {% if request.session.language == 'en' %}
+                    <div class="main-screen-text">App №1 in Kazahstan</div>
+                {% elif request.session.language == 'rus' %}
+                    <div class="main-screen-text">Приложение №1 в Казахстане</div>
+                {% elif request.session.language == 'kz' %}
+                    <div class="main-screen-text">Қазақстандағы № 1 қосымша</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="django-shop">
+        <div class="django-shop_wrapper">
+            <div class="django-shop_title">
+                {% if request.session.language == 'en' %}
+                    Online store on Django
+                {% elif request.session.language == 'rus' %}
+                    Интернет-магазин на Django
+                {% elif request.session.language == 'kz' %}
+                    Django-дағы Интернет-дүкен
+                {% endif %}
+            </div>
+            <div class="django-shop_slider">
+                <div class="django-shop_slider-wrapper">
+                    {% for category in Category %}
+                        <a class="django-shop_slider-item" href="{% url 'good_by_category_url' category.id %}">
+                            <span class="category-card_title">{{ category.name }}</span>
+                            <span class="category-card_image"><img src="{{ category.image.url }}"></span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="django-shop_slider">
+                <div class="shop-div">
+                    <button class="shop-button" onclick="location.href='{% url 'shop_url' %}'">
+                        {% if request.session.language == 'en' %}
+                            To the shop
+                        {% elif request.session.language == 'rus' %}
+                            В магазин
+                        {% elif request.session.language == 'kz' %}
+                            Дүкенге
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stay-partner">
+        <div class="stay-partner_title">
+            {% if request.session.language == 'en' %}
+                Become a partner
+            {% elif request.session.language == 'rus' %}
+                Стать партнером
+            {% elif request.session.language == 'kz' %}
+                Серіктес болыңыз
+            {% endif %}
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <div class="stay-partner_card">
+                        <div class="partner-card_header">
+                            <div class="partner-card_title">
+                                {% if request.session.language == 'en' %}
+                                    Sell in the Online store on Django store
+                                {% elif request.session.language == 'rus' %}
+                                    Продавать в Интернет-магазине на Django store
+                                {% elif request.session.language == 'kz' %}
+                                    Django дүкеніндегі Интернет-дүкенде сатыңыз
+                                {% endif %}
+                            </div>
+                            <div class="partner-card_image"><img src="/media/main/cart.svg"></div>
+                        </div>
+                        <div class="partner-card_description">
+                            {% if request.session.language == 'en' %}
+                                More than 5 million customers, delivery of goods throughout Kazakhstan, the ability to sell on credit and installments.
+                            {% elif request.session.language == 'rus' %}
+                                Более 5 млн покупателей, доставка товаров по всему Казахстану, возможность продавать в кредит и рассрочку.
+                            {% elif request.session.language == 'kz' %}
+                                5 млн-нан астам Сатып алушы, бүкіл Қазақстан бойынша тауарларды жеткізу, несиеге және бөліп-бөліп сату мүмкіндігі.
+                            {% endif %}</div>
+                        <div class="partner-card_action">
+                            <a href="{% url 'status_seller_url' %}">
+                                {% if request.session.language == 'en' %}
+                                    Start selling in an online store
+                                {% elif request.session.language == 'rus' %}
+                                    Начать продавать в Интернет-магазине
+                                {% elif request.session.language == 'kz' %}
+                                    Интернет-дүкенде сатуды бастаңыз
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="stay-partner_card" style="margin-left: 26px;">
+                        <div class="partner-card_header">
+                            <div class="partner-card_title">
+                                {% if request.session.language == 'en' %}
+                                    Sell in the Online store on Django store
+                                {% elif request.session.language == 'rus' %}
+                                    Продавать в Интернет-магазине на Django store
+                                {% elif request.session.language == 'kz' %}
+                                    Django дүкеніндегі Интернет-дүкенде сатыңыз
+                                {% endif %}
+                            </div>
+                            <div class="partner-card_image"><img src="/media/main/cart.svg"></div>
+                        </div>
+                        <div class="partner-card_description">
+                            {% if request.session.language == 'en' %}
+                                More than 5 million customers, delivery of goods throughout Kazakhstan, the ability to sell on credit and installments.
+                            {% elif request.session.language == 'rus' %}
+                                Более 5 млн покупателей, доставка товаров по всему Казахстану, возможность продавать в кредит и рассрочку.
+                            {% elif request.session.language == 'kz' %}
+                                5 млн-нан астам Сатып алушы, бүкіл Қазақстан бойынша тауарларды жеткізу, несиеге және бөліп-бөліп сату мүмкіндігі.
+                            {% endif %}</div>
+                        <div class="partner-card_action">
+                            <a href="{% url 'status_seller_url' %}">
+                                {% if request.session.language == 'en' %}
+                                    Start selling in an online store
+                                {% elif request.session.language == 'rus' %}
+                                    Начать продавать в Интернет-магазине
+                                {% elif request.session.language == 'kz' %}
+                                    Интернет-дүкенде сатуды бастаңыз
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    
+    <script src="https://kit.fontawesome.com/73ac4e980c.js" crossorigin="anonymous"></script>
+    <script>
+        function selectLanguage() {
+            const selectElement = document.getElementById("select_language");
+            const selectedValue = selectElement.value;
+
+            const languageInput = document.getElementById("language_input");
+            languageInput.value = selectedValue;
+            
+            const languageForm = document.getElementById("language_form");
+            languageForm.submit();
+        }
+    </script>
+{% endblock content %}

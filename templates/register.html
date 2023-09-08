@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'login_register/register.css' %}?{% now 'U' %}">
+</head>
+<body>
+    <form action="{% url 'register_url' %}" method="post">
+        <h3>Register Here</h3>
+        
+        {% if error_message %}
+            <p class="errorlist">{{ error_message }}</p>
+        {% endif %}
+
+        {% csrf_token %}
+
+        
+        <label for="username">Username:</label> <p></p>
+        <input class="edit-input" type="text" name="username" id="username" placeholder="{{ Profile.user.username }}" required>
+
+        <label for="email">Email:</label> <p></p>
+        <input class="edit-input" type="email" name="email" id="email" placeholder="{{ Profile.email }}" required>
+
+        <label for="password1">Password:</label>
+        <input class="edit-input" type="password" name="password1" id="password1" required>
+
+        <label for="password2">Confirm password:</label>
+        <input class="edit-input" type="password" name="password2" id="password2" required>
+
+        <input class="input" type="submit" value="Register">
+        <button class="button" onclick="location.href='{% url 'login_url' %}'">Return</button>
+    </form>
+</body>
+</html>

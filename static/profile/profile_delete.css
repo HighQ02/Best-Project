@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.profile-card {
+    max-width: 400px;
+    margin: 101px auto;
+    background-color: #fff;
+    padding: 20px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+}
+
+.profile-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.delete-button, .return-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover, .return-button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'login_register/login.css' %}?{% now 'U' %}">
+    <title>Log In</title>
+</head>
+<body>
+    <form method="post">
+        <h3>Login Here</h3>
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" value="Log In" class="input">
+
+        <div class="social">
+            <a href="#"><div class="go"><i class="fab fa-google"></i>  Google</div></a>
+            <a href="#"><div class="fb"><i class="fab fa-facebook"></i>  Facebook</div></a>
+            <a href="#"><div class="fb"><i class="fab fa-vk"></i>  Vk</div></a>
+        </div>
+
+        <button class="button" onclick="location.href='{% url 'register_url' %}'">No Account? Register</button>
+    </form>
+</body>
+</html>
