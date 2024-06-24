@@ -35,7 +35,7 @@ urlpatterns = [
 
     path('status/seller', StatusSeller, name='status_seller_url'),
 
-    path('messages/new/<int:item_pk>', newConversation, name='new'),
-    path('messages', chats, name='chats'),
-    path('messages/<int:pk>', detail, name='detail'),
+    path('messages/new/<int:item_pk>/', newConversation, name='new'),
+    path('messages/', chats, name='chats'),
+    path('messages/<int:pk>/', detail, name='detail'),
 ]

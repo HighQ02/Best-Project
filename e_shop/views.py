@@ -283,7 +283,7 @@ def GoodDetail(request, good_pk):
             review = Reviewform.save(commit=False)
             review.product = item
             review.user = request.user
-            review.save()
+            # review.save()
             return redirect('good_detail_url', pk=good_pk)
         if Replyform.is_valid():
             review = Review.objects.get(id=request.POST.get('review_id'))
@@ -450,17 +450,22 @@ def StatusSeller(request):
 
 @login_required
 def newConversation(request, item_pk):
+    print('1=============')
     item = get_object_or_404(Product, pk=item_pk)
 
+    print('2=============')
     if item.seller == request.user:
-        return redirect('good_detail_url', pk=item_pk) 
+        return redirect('good_detail_url', good_pk=item_pk) 
 
     conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id])
 
+    print('3=============')
     if conversations:
         return redirect('detail', pk=conversations.first().id)
 
-    if request.method=='POST':
+    print('4=============')
+    if request.method == 'POST':
+        print('5=============')
         form = ConversationMessageForm(request.POST)
         if form.is_valid():
             conversation = Conversation.objects.create(item=item)
@@ -470,14 +475,18 @@ def newConversation(request, item_pk):
 
             conversation_message = form.save(commit=False)
             conversation_message.conversation = conversation
-            conversation_message.seller = request.user
+            conversation_message.created_by = request.user
             conversation_message.save()
 
-            return redirect('good_detail_url', pk=item_pk)
+            return redirect('good_detail_url', good_pk=item_pk)
     else:
+        print('6=============')
         form = ConversationMessageForm()
 
-        return render(request, 'new.html', {'form': form})
+        return render(request, 'new.html', {
+            'item': item,
+            'form': form
+        })
 
 
 @login_required
@@ -490,6 +499,7 @@ def chats(request):
 
 @login_required
 def detail(request, pk):
+    conversations = Conversation.objects.filter(members__in=[request.user.id])
     conversation = Conversation.objects.filter(members__in=[request.user.id]).get(pk=pk)
 
     if request.method == 'POST':
@@ -498,7 +508,7 @@ def detail(request, pk):
         if form.is_valid():
             conversation_message = form.save(commit=False)
             conversation_message.conversation = conversation
-            conversation_message.seller = request.user
+            conversation_message.created_by = request.user
             conversation_message.save()
 
             conversation.save()
@@ -508,6 +518,7 @@ def detail(request, pk):
         form = ConversationMessageForm()
 
     return render(request, 'messagedetail.html', {
+        'conversations': conversations,
         'conversation': conversation,
         'form': form,
     })
@@ -515,5 +526,3 @@ def detail(request, pk):
 
 def ErrorPage(request):
     return render(request, 'errorpage.html', status=404)
-    
-    
